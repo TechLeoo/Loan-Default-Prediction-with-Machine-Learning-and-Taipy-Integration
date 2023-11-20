@@ -1,0 +1,2 @@
+# Loan Default Prediction with Machine Learning and Taipy Integration
+ Predicting loan default risk has never been more efficient! This GitHub repository houses a comprehensive solution that combines the power of machine learning and Taipy integration to assess and predict loan default probabilities. Whether you're a financial analyst or a data science enthusiast, this project provides valuable insights into credit risk assessment.
