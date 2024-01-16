@@ -8,7 +8,6 @@ Created on Mon Jan  8 22:05:30 2024
 # Import Libraries
 import pandas as pd
 import numpy as np
-import joblib
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
@@ -33,9 +32,10 @@ training_eda = automate_training.eda()
 test_eda = automate_test.eda()
 
 # D A T A   C L E A N I N G   A N D   T R A N S F O R M A T I O N 
-# training_eda_visual = automate_training.eda_visual(y = "Loan Status", figsize_barchart = (55, 10), figsize_heatmap = (15, 10), figsize_histogram=(35, 20))
+training_eda_visual = automate_training.eda_visual(y = "Loan Status", figsize_barchart = (55, 10), figsize_heatmap = (15, 10), figsize_histogram=(35, 20))
 
 for data in automate:
+    data.reduce_data_memory_useage()
     data.drop_columns(["ID", "Batch Enrolled"])
     data.categorical_to_numerical()
 
@@ -50,21 +50,25 @@ test_data_clean = automate_test.get_dataset()
 
 unbalanced_dataset_check = automate_training.count_column_categories(column = "Loan Status")
 split_data = automate_training.split_data()
-fix_unbalanced_data = automate_training.fix_unbalanced_dataset(sampler = "SMOTE", k_neighbors = 5, random_state = 0)
+# fix_unbalanced_data = automate_training.fix_unbalanced_dataset(sampler = "RandomOverSampler", random_state = 0)
 
-check_unbalanced_data_fix = automate_training.count_column_categories(column = "Loan Status")
+check_unbalanced_data_fix = automate_training.count_column_categories(column = "Loan Status", test_data = True)
 
 # M O D E L   B U I L D I N G 
 classifiers = [LogisticRegression(random_state = 0),
-               SVC(),
-               RandomForestClassifier(random_state = 0),
-               DecisionTreeClassifier(random_state = 0),
-               XGBClassifier(random_state = 0)
-               ]
+                SVC(),
+                RandomForestClassifier(random_state = 0),
+                DecisionTreeClassifier(random_state = 0),
+                XGBClassifier(random_state = 0)
+                ]
+
 # build_model = automate_training.build_multiple_classifiers(classifiers = classifiers,
-#                                                            kfold = 10,
-#                                                            cross_validation = True,
-#                                                            graph = True
-#                                                            )
-    
+#                                                             kfold = 10,
+#                                                             cross_validation = True,
+#                                                             graph = True
+#                                                             )
+
+model = automate_training.train_model_classifier(classifiers[1])
+prediction = automate_training.classifier_predict() 
+evaluation = automate_training.classifier_evaluation(cross_validation = True)
 
