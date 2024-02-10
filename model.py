@@ -13,7 +13,7 @@ from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from xgboost import XGBClassifier
-from buildml.automate import SupervisedLearning
+from buildml import SupervisedLearning
 
 # G E T   D A T A S E T 
 training_data = pd.read_csv("train.csv")
@@ -32,7 +32,7 @@ training_eda = automate_training.eda()
 test_eda = automate_test.eda()
 
 # D A T A   C L E A N I N G   A N D   T R A N S F O R M A T I O N 
-training_eda_visual = automate_training.eda_visual(y = "Loan Status", figsize_barchart = (55, 10), figsize_heatmap = (15, 10), figsize_histogram=(35, 20))
+training_eda_visual = automate_training.eda_visual(figsize_barchart = (55, 10), figsize_heatmap = (15, 10), figsize_histogram=(35, 20))
 
 for data in automate:
     data.reduce_data_memory_useage()
@@ -56,19 +56,18 @@ check_unbalanced_data_fix = automate_training.count_column_categories(column = "
 
 # M O D E L   B U I L D I N G 
 classifiers = [LogisticRegression(random_state = 0),
-                SVC(),
                 RandomForestClassifier(random_state = 0),
                 DecisionTreeClassifier(random_state = 0),
                 XGBClassifier(random_state = 0)
                 ]
 
-# build_model = automate_training.build_multiple_classifiers(classifiers = classifiers,
-#                                                             kfold = 10,
-#                                                             cross_validation = True,
-#                                                             graph = True
-#                                                             )
+build_model = automate_training.build_multiple_classifiers(classifiers = classifiers,
+                                                            kfold = 10,
+                                                            cross_validation = True,
+                                                            graph = True
+                                                            )
 
-model = automate_training.train_model_classifier(classifiers[1])
-prediction = automate_training.classifier_predict() 
-evaluation = automate_training.classifier_evaluation(cross_validation = True)
+# model = automate_training.train_model_classifier(classifiers[1])
+# prediction = automate_training.classifier_predict() 
+# evaluation = automate_training.classifier_evaluation(cross_validation = True)
 
